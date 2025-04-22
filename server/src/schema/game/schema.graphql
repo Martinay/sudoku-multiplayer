@@ -1,0 +1,26 @@
+extend type Query {
+  game(id: ID!): SudokuGame
+}
+
+extend type Mutation {
+  createNewGame: SudokuGame!
+  updateCellValue(gameId: ID!, row: Int!, column: Int!, value: Int): Boolean,
+}
+
+extend type Subscription {
+  watchGame(gameId: ID!): Int!
+}
+
+type SudokuGame {
+  id: ID!
+  board: [SudokuCell]!
+}
+
+type SudokuCell {
+  row: Int!
+  column: Int!
+  value: Int
+  solution: Int!
+  isEditable: Boolean!
+  isValid: Boolean
+}
