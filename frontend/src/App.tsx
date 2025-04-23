@@ -37,7 +37,7 @@ function App() {
     updateCellValueMutationDocument
   )
 
-  async function onSudokuCellUpdated(row: number, column: number, value: number | null): void {
+  async function onSudokuCellUpdated(row: number, column: number, value: number | null): Promise<void> {
     await updateCellValue({
       gameId: '0196522b-409b-7000-873a-58035a88d516',
       row: row,
