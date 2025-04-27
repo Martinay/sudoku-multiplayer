@@ -12,7 +12,7 @@ env:
 
 jobs:
   build-and-push-image:
-    runs-on: oven/bun:1.2.10-debian
+    runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.meta.outputs.tags }}
     permissions:
@@ -24,6 +24,11 @@ jobs:
       - name: 'Checkout Repository' 
         uses: actions/checkout@v4
       
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.10
+
       - name: install dependencies and build
         shell: bash
         run: |
