@@ -4,14 +4,17 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "dev": "bun run src/index.ts --hot",
     "lint": "eslint",
     "prettier:write": "prettier . --write",
-    "start": "bun run src/index.ts"
+    "start": "bun run src/index.ts",
+    "graphql-gen": "graphql-codegen --watch"
   },
   "devDependencies": {
     "@eddeee888/gcg-typescript-resolver-files": "^0.12.0",
     "@eslint/js": "^9.25.0",
     "@graphql-codegen/cli": "^5.0.5",
+    "@parcel/watcher": "^2.5.1",
     "@types/bun": "latest",
     "eslint": "^9.25.0",
     "eslint-config-prettier": "^10.1.2",

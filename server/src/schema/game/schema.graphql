@@ -8,11 +8,19 @@ extend type Mutation {
 }
 
 extend type Subscription {
-  watchGame(gameId: ID!): Int!
+  onCellValueUpdated(gameId: ID!):CellValueUpdateData
+}
+
+type CellValueUpdateData{
+  row: Int!
+  column: Int!
+  value: Int
+  isValid: Boolean
 }
 
 type SudokuGame {
   id: ID!
+  difficulty: String!
   board: [SudokuCell]!
 }
 

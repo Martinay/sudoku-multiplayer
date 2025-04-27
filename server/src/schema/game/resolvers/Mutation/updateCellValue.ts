@@ -1,4 +1,5 @@
 import { loadGame } from '../../../../services/load-game';
+import { messageBus } from '../../../../services/message-bus';
 import { saveGame } from '../../../../services/save-game';
 import type { MutationResolvers } from './../../../types.generated';
 export const updateCellValue: NonNullable<
@@ -15,5 +16,11 @@ export const updateCellValue: NonNullable<
   cellToUpdate.value = value;
   cellToUpdate.isValid = !!value && value === cellToUpdate.solution;
   await saveGame(game);
+  messageBus.publish('sudoku:CellValueUpdated', _arg.gameId, {
+    column,
+    row,
+    value: value ?? undefined,
+    isValid: cellToUpdate.isValid,
+  });
   return true;
 };

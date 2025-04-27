@@ -14,11 +14,12 @@ const allGames = async (): Promise<string[]> => {
 export const createRandomGame = async (): Promise<SudokuGame> => {
   const gameId = Math.floor(Math.random() * 3_000_000);
   const rawGame = (await allGames())[gameId];
-  console.log('Game ID:', gameId, 'Raw Game:', rawGame);
-  if (!rawGame) throw new Error('Game not found');
-  const [, puzzle, solution, ,] = rawGame.split(',');
-  if (!puzzle || !solution) throw new Error('Invalid game data');
 
+  if (!rawGame) throw new Error('Game not found');
+  const [id, puzzle, solution, , difficulty] = rawGame.split(',');
+  if (!puzzle || !solution || !difficulty) throw new Error('Invalid game data');
+
+  console.log('Loading game with csv id:', { id });
   const board = puzzle.split('').map((value, index) => {
     const valueParsed = value === '.' ? null : parseInt(value, 10);
     const solutionValue = solution[index];
@@ -37,6 +38,7 @@ export const createRandomGame = async (): Promise<SudokuGame> => {
 
   return {
     id: Bun.randomUUIDv7(),
+    difficulty,
     board,
   };
 };

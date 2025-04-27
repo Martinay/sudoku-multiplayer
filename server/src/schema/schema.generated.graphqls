@@ -1,3 +1,10 @@
+type CellValueUpdateData {
+  column: Int!
+  isValid: Boolean
+  row: Int!
+  value: Int
+}
+
 type Mutation {
   createNewGame: SudokuGame!
   updateCellValue(column: Int!, gameId: ID!, row: Int!, value: Int): Boolean
@@ -8,7 +15,7 @@ type Query {
 }
 
 type Subscription {
-  watchGame(gameId: ID!): Int!
+  onCellValueUpdated(gameId: ID!): CellValueUpdateData
 }
 
 type SudokuCell {
@@ -22,5 +29,6 @@ type SudokuCell {
 
 type SudokuGame {
   board: [SudokuCell]!
+  difficulty: String!
   id: ID!
 }

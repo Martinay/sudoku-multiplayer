@@ -16,6 +16,14 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type CellValueUpdateData = {
+  __typename?: 'CellValueUpdateData';
+  column: Scalars['Int']['output'];
+  isValid?: Maybe<Scalars['Boolean']['output']>;
+  row: Scalars['Int']['output'];
+  value?: Maybe<Scalars['Int']['output']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createNewGame: SudokuGame;
@@ -42,11 +50,11 @@ export type QuerygameArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  watchGame: Scalars['Int']['output'];
+  onCellValueUpdated?: Maybe<CellValueUpdateData>;
 };
 
 
-export type SubscriptionwatchGameArgs = {
+export type SubscriptiononCellValueUpdatedArgs = {
   gameId: Scalars['ID']['input'];
 };
 
@@ -63,6 +71,7 @@ export type SudokuCell = {
 export type SudokuGame = {
   __typename?: 'SudokuGame';
   board: Array<Maybe<SudokuCell>>;
+  difficulty: Scalars['String']['output'];
   id: Scalars['ID']['output'];
 };
 
@@ -137,9 +146,10 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Mutation: ResolverTypeWrapper<{}>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  CellValueUpdateData: ResolverTypeWrapper<CellValueUpdateData>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  Mutation: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Query: ResolverTypeWrapper<{}>;
   Subscription: ResolverTypeWrapper<{}>;
@@ -150,15 +160,24 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Mutation: {};
-  Boolean: Scalars['Boolean']['output'];
+  CellValueUpdateData: CellValueUpdateData;
   Int: Scalars['Int']['output'];
+  Boolean: Scalars['Boolean']['output'];
+  Mutation: {};
   ID: Scalars['ID']['output'];
   Query: {};
   Subscription: {};
   SudokuCell: SudokuCell;
   SudokuGame: SudokuGame;
   String: Scalars['String']['output'];
+};
+
+export type CellValueUpdateDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CellValueUpdateData'] = ResolversParentTypes['CellValueUpdateData']> = {
+  column?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  isValid?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  row?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  value?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -171,7 +190,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
-  watchGame?: SubscriptionResolver<ResolversTypes['Int'], "watchGame", ParentType, ContextType, RequireFields<SubscriptionwatchGameArgs, 'gameId'>>;
+  onCellValueUpdated?: SubscriptionResolver<Maybe<ResolversTypes['CellValueUpdateData']>, "onCellValueUpdated", ParentType, ContextType, RequireFields<SubscriptiononCellValueUpdatedArgs, 'gameId'>>;
 };
 
 export type SudokuCellResolvers<ContextType = any, ParentType extends ResolversParentTypes['SudokuCell'] = ResolversParentTypes['SudokuCell']> = {
@@ -186,11 +205,13 @@ export type SudokuCellResolvers<ContextType = any, ParentType extends ResolversP
 
 export type SudokuGameResolvers<ContextType = any, ParentType extends ResolversParentTypes['SudokuGame'] = ResolversParentTypes['SudokuGame']> = {
   board?: Resolver<Array<Maybe<ResolversTypes['SudokuCell']>>, ParentType, ContextType>;
+  difficulty?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
+  CellValueUpdateData?: CellValueUpdateDataResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;

@@ -1,55 +1,21 @@
-import './App.css'
-import SudokuGrid from './components/sudoku/grid'
-import { graphql } from './graphql/gql'
-import { useMutation, useQuery } from 'urql'
+import Home from "./pages/Home";
+import Game from "./pages/Game";
+import { Provider } from "urql";
+import { client } from "./graphql/client";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
+import { BrowserRouter, Route, Routes } from "react-router";
 
-const sudokuGetGameQueryDocument = graphql(`
-query getGame($gameId : ID!){
-  game(id: $gameId){
-    id,
-    board{
-      row,
-      column,
-      value,
-      isValid,
-      isEditable
-    }
-  }
-}
-`)
-
-
-const updateCellValueMutationDocument = graphql(`
-mutation updateCellValue($gameId : ID!, $row: Int!, $column: Int!, $newValue: Int){
-  updateCellValue(gameId: $gameId, row:$row, column: $column, value: $newValue)
-}
-  `)
-
-function App() {  
-  const [{ data }] = useQuery({
-    query: sudokuGetGameQueryDocument,
-    variables: {      
-      gameId: '0196522b-409b-7000-873a-58035a88d516'
-    }
-  })
-  const board = data?.game?.board;
-  const [, updateCellValue] = useMutation(
-    updateCellValueMutationDocument
-  )
-
-  async function onSudokuCellUpdated(row: number, column: number, value: number | null): Promise<void> {
-    await updateCellValue({
-      gameId: '0196522b-409b-7000-873a-58035a88d516',
-      row: row,
-      column: column,
-      newValue: value})
-  }
-
+export default function App() {
   return (
-    <div>
-      {board && <SudokuGrid board={board} onCellUpdate={onSudokuCellUpdated}/>}
-    </div>
-  )
+    <Provider value={client}>
+      <ChakraProvider value={defaultSystem}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/sudoku/:gameId" element={<Game />} />
+          </Routes>
+        </BrowserRouter>
+      </ChakraProvider>
+    </Provider>
+  );
 }
-
-export default App
