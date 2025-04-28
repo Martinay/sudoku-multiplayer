@@ -24,18 +24,6 @@ jobs:
       - name: 'Checkout Repository' 
         uses: actions/checkout@v4
       
-      - name: Use Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.2.10
-
-      - name: install dependencies and build
-        shell: bash
-        run: |
-          bun install --frozen-lockfile
-          bun run build
-          bun install --cwd ./apps/backend --frozen-lockfile --production
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
