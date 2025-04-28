@@ -34,7 +34,7 @@ jobs:
         run: |
           bun install --frozen-lockfile
           bun run build
-          bun install --frozen-lockfile --production
+          bun install --cwd ./apps/backend --frozen-lockfile --production
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3

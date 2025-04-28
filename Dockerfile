@@ -3,11 +3,11 @@
 FROM oven/bun:1-distroless
 WORKDIR /app
 
-COPY  /node_modules node_modules
+COPY  apps/backend/node_modules node_modules
 COPY apps/backend/out/app.js index.js
 COPY apps/frontend/dist frontend
 
-# run the app
-USER bun
+ENV FRONTEND_PATH=/app/frontend
+
 EXPOSE 3000/tcp
 ENTRYPOINT [ "bun", "run", "index.js" ]
