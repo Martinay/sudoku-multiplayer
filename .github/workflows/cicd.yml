@@ -6,7 +6,7 @@ on:
       - cicd-test
 
 env:
-  AZURE_WEBAPP_NAME: "Sudoku App"   # set this to your application's name
+  AZURE_WEBAPP_NAME: "sudoku-app-123"
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
@@ -56,3 +56,25 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           file: ./Dockerfile
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push-image
+
+    steps:
+    - uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # deploy web app using Azure credentials
+    - uses: azure/webapps-deploy@v3    
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        images: ${{ needs.build-and-push-image.outputs.tag }}
+
+    # Azure logout 
+    - name: logout
+      if: always()
+      run: |
+        az logout

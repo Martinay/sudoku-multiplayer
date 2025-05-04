@@ -32,5 +32,6 @@ COPY --from=prerelease /app/apps/backend/out/app.js index.js
 COPY --from=prerelease /app/apps/frontend/dist frontend
 
 ENV FRONTEND_DIRECTORY=/app/frontend
+ENV NODE_ENV=production
 EXPOSE 3000/tcp
 ENTRYPOINT [ "bun", "run", "index.js" ]

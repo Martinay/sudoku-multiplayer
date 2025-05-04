@@ -4,6 +4,7 @@ import { typeDefs } from './schema/typeDefs.generated';
 import { join } from 'path';
 
 console.log(`Running bun version ${Bun.version}`);
+console.log(`Running environment: ${Bun.env.NODE_ENV}`);
 
 const yoga = createYoga({ schema: createSchema({ typeDefs, resolvers }) });
 
