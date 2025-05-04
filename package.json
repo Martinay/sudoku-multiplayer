@@ -1,0 +1,14 @@
+{
+    "name": "sudoku-app",
+    "private": true,    
+    "workspaces": [
+        "apps/*"
+    ],
+    "scripts": {
+      "build": "bun --filter  './apps/*' build",
+      "dev": "bun --filter  './apps/*' dev",
+      "docker:build": "docker build -t sudoku-multiplayer:latest .",
+      "docker:run": "docker run --rm -p 3100:3000 sudoku-multiplayer:latest",
+      "graphql-gen": "bun run --filter './apps/*' graphql-gen"
+    }
+  }

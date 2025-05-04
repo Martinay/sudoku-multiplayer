@@ -50,7 +50,7 @@ export default function Game() {
   const [, updateCellValue] = useMutation(updateCellValueMutationDocument);
   const [{ data: subscriptionData }] = useSubscription(
     { query: subscribeToCellChangesDocument, variables: { gameId } },
-    (prev, res) => res
+    (_, res) => res
   );
 
   const [selected, setSelected] = useState<{ row: number; column: number } | null>(null);
