@@ -3,7 +3,7 @@ name: deployment
 on:
   push:
     branches:
-      - cicd-test
+      - main
 
 env:
   AZURE_WEBAPP_NAME: "sudoku-app-123"
