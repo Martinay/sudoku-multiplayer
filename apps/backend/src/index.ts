@@ -1,15 +1,17 @@
 import { createSchema, createYoga } from 'graphql-yoga';
 import { resolvers } from './schema/resolvers.generated';
 import { typeDefs } from './schema/typeDefs.generated';
-import { resolve, join } from 'path'; // Import path module
+import { join } from 'path';
 
 console.log(`Running bun version ${Bun.version}`);
 
 const yoga = createYoga({ schema: createSchema({ typeDefs, resolvers }) });
 
-const frontendDistPath =
-  Bun.env.FRONTEND_PATH ?? resolve(import.meta.dir, '../../frontend/dist');
+const frontendDistPath = Bun.env.FRONTEND_DIRECTORY;
 console.log(`Serving static files from: ${frontendDistPath}`);
+if (!frontendDistPath) {
+  throw new Error('FRONTEND_DIRECTORY environment variable is not set');
+}
 
 const server = Bun.serve({
   async fetch(req) {

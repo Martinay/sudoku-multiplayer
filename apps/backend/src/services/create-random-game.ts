@@ -4,7 +4,11 @@ let lines: string[] = [];
 
 const allGames = async (): Promise<string[]> => {
   if (lines.length) return lines;
-  const file = await Bun.file('./data/sudoku-3m.csv');
+  const filePath = Bun.env.SUDOKU_GAMES_FILE_PATH;
+  if (!filePath) {
+    throw new Error('SUDOKU_GAMES_FILE_PATH environment variable is not set');
+  }
+  const file = await Bun.file(filePath);
   const text = await file.text();
   lines = text.split('\n').slice(1, -1); // Skip header line
   console.log('Loaded games from CSV file:', lines.length);
