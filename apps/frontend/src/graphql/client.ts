@@ -1,9 +1,26 @@
-import { createClient, fetchExchange } from "urql";
+import { createClient, fetchExchange, subscriptionExchange  } from "urql";
+
+import { createClient as createWSClient } from 'graphql-ws';
+
+const defaultUrl = `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}/graphql`;
+const wsClient = createWSClient({
+  url: import.meta.env.VITE_WS_URL || defaultUrl,
+});
 
 export const client = createClient({
-  url: 'http://localhost:3000/graphql',
-  fetchSubscriptions: true,
+  url: '/graphql',
   exchanges: [
-    fetchExchange 
+    fetchExchange,
+    subscriptionExchange({
+      forwardSubscription(request) {
+        const input = { ...request, query: request.query || '' };
+        return {
+          subscribe(sink) {
+            const unsubscribe = wsClient.subscribe(input, sink);
+            return { unsubscribe };
+          },
+        };
+      },
+    })
   ],
 })
