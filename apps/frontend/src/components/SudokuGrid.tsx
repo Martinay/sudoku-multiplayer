@@ -1,13 +1,15 @@
 import { Grid } from "@chakra-ui/react";
 import { SudokuCell } from "./SudokuCell";
+import { SettingsData } from "../utils/settings";
 
 type Props = {
   board: ({row: number; column: number; value?: number | null | undefined; isValid?: boolean | null | undefined; isEditable: boolean; annotations?: { matrix: number[]; } | null; } | null)[];
   selected: { row: number; column: number } | null;
   onSelect: (row: number, column: number) => void;
+  settings: SettingsData;
 };
 
-export const SudokuGrid = ({ board, selected, onSelect }: Props) => {
+export const SudokuGrid = ({ board, selected, onSelect, settings }: Props) => {
   const getCell = (row: number, col: number) =>
     board.find(cell => cell?.row === row && cell?.column === col) || null;
 
@@ -43,6 +45,7 @@ export const SudokuGrid = ({ board, selected, onSelect }: Props) => {
               borderBottom={borderBottom}
               borderLeft={borderLeft}
               borderRight={borderRight}
+              settings={settings}
             />
           );
         })

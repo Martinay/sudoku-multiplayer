@@ -4,8 +4,10 @@ import { useMutation, useQuery, useSubscription } from "urql";
 import { Box, Heading, Spinner, VStack, HStack, Button } from "@chakra-ui/react";
 import { SudokuGrid } from "../components/SudokuGrid";
 import { NumberPad } from "../components/NumberPad";
+import { Settings } from "../components/Settings";
 import { graphql } from "../graphql/gql";
 import { SudokuCell } from "../graphql/graphql";
+import { SettingsData, loadSettingsFromStorage, saveSettingsToStorage } from "../utils/settings";
 
 const sudokuGetGameQueryDocument = graphql(`
     query getGame($gameId : ID!){
@@ -83,6 +85,12 @@ export default function Game() {
   const [selected, setSelected] = useState<{ row: number; column: number } | null>(null);
   const [sudokuCells, setSudokuCells] = useState<SudokuCell[] | null>(null);
   const [mode, setMode] = useState<'value' | 'annotation'>('value');
+  const [settings, setSettings] = useState<SettingsData>(() => loadSettingsFromStorage());
+
+  // Save settings to localStorage whenever they change
+  useEffect(() => {
+    saveSettingsToStorage(settings);
+  }, [settings]);
 
   useEffect(() => {
     if (data?.game?.board) {
@@ -172,52 +180,66 @@ export default function Game() {
   );
 
   return (
-    <Box 
-      textAlign="center" 
-      p={3} 
+    <HStack 
+      gap={6} 
+      alignItems="flex-start"
+      justifyContent="center"
+      p={4}
       maxH="100vh"
-      bg="rgba(255, 255, 255, 0.95)"
-      borderRadius="xl"
-      boxShadow="lg"
-      maxW="600px"
-      mx="auto"
     >
-      <VStack gap={3}>
-        <Heading size="lg" color="blue.600">
-          Sudoku - Difficulty {game.difficulty}
-        </Heading>
-        
-        <HStack gap={3}>
-          <Button 
-            bg={mode === 'value' ? 'blue.500' : 'transparent'}
-            color={mode === 'value' ? 'white' : 'blue.500'}
-            border="2px solid"
-            borderColor="blue.500"
-            onClick={() => setMode('value')}
-            _hover={{ bg: mode === 'value' ? 'blue.600' : 'blue.50' }}
-          >
-            Value Mode
-          </Button>
-          <Button 
-            bg={mode === 'annotation' ? 'green.500' : 'transparent'}
-            color={mode === 'annotation' ? 'white' : 'green.500'}
-            border="2px solid"
-            borderColor="green.500"
-            onClick={() => setMode('annotation')}
-            _hover={{ bg: mode === 'annotation' ? 'green.600' : 'green.50' }}
-          >
-            Annotation Mode
-          </Button>
-        </HStack>
-        
-        <SudokuGrid 
-          board={sudokuCells} 
-          selected={selected} 
-          onSelect={(row, column) => setSelected({ row: row, column: column })} 
-        />
-        
-        <NumberPad onClick={handleNumberClick} mode={mode} />
-      </VStack>
-    </Box>
+      {/* Settings Panel */}
+      <Settings 
+        settings={settings} 
+        onSettingsChange={setSettings} 
+      />
+      
+      {/* Main Game Area */}
+      <Box 
+        textAlign="center" 
+        p={3} 
+        bg="rgba(255, 255, 255, 0.95)"
+        borderRadius="xl"
+        boxShadow="lg"
+        maxW="600px"
+      >
+        <VStack gap={3}>
+          <Heading size="lg" color="blue.600">
+            Sudoku - Difficulty {game.difficulty}
+          </Heading>
+          
+          <HStack gap={3}>
+            <Button 
+              bg={mode === 'value' ? 'blue.500' : 'transparent'}
+              color={mode === 'value' ? 'white' : 'blue.500'}
+              border="2px solid"
+              borderColor="blue.500"
+              onClick={() => setMode('value')}
+              _hover={{ bg: mode === 'value' ? 'blue.600' : 'blue.50' }}
+            >
+              Value Mode
+            </Button>
+            <Button 
+              bg={mode === 'annotation' ? 'green.500' : 'transparent'}
+              color={mode === 'annotation' ? 'white' : 'green.500'}
+              border="2px solid"
+              borderColor="green.500"
+              onClick={() => setMode('annotation')}
+              _hover={{ bg: mode === 'annotation' ? 'green.600' : 'green.50' }}
+            >
+              Annotation Mode
+            </Button>
+          </HStack>
+          
+          <SudokuGrid 
+            board={sudokuCells} 
+            selected={selected} 
+            onSelect={(row, column) => setSelected({ row: row, column: column })}
+            settings={settings}
+          />
+          
+          <NumberPad onClick={handleNumberClick} mode={mode} />
+        </VStack>
+      </Box>
+    </HStack>
   );
 }

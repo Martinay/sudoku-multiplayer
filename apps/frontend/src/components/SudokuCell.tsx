@@ -1,4 +1,5 @@
 import { GridItem, Grid, Box } from "@chakra-ui/react";
+import { SettingsData } from "../utils/settings";
 
 type SudokuCellData = {
   row: number;
@@ -19,6 +20,7 @@ type Props = {
   borderBottom: string;
   borderLeft: string;
   borderRight: string;
+  settings: SettingsData;
 };
 
 export const SudokuCell = ({
@@ -29,13 +31,14 @@ export const SudokuCell = ({
   borderBottom,
   borderLeft,
   borderRight,
+  settings,
 }: Props) => {
   const renderCellContent = () => {
     if (cell?.value) {
       return cell.value;
     }
 
-    if (cell?.annotations?.matrix && cell.annotations.matrix.length > 0) {
+    if (settings.showMatrixAnnotations && cell?.annotations?.matrix && cell.annotations.matrix.length > 0) {
       return (
         <Grid
           templateColumns="repeat(3, 1fr)"
@@ -85,9 +88,9 @@ export const SudokuCell = ({
       color={
         cell?.isEditable === false
           ? "gray.700"
-          : cell?.isValid === true
-          ? "green.500"
-          : "red.500"
+          : settings.checkForMistakes && cell?.isValid === false
+          ? "red.500"
+          : "blue.500"
       }
       fontSize="lg"
       transition="all 0.2s"
