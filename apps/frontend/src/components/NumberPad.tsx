@@ -1,11 +1,12 @@
 import { HStack, Button } from "@chakra-ui/react";
+import { ValueInputMode } from "../types/game";
 
-type Props = {
+interface NumberPadProps {
   onClick: (value: number) => void;
-  mode?: 'value' | 'annotation';
-};
+  mode?: ValueInputMode;
+}
 
-export const NumberPad = ({ onClick, mode = 'value' }: Props) => (
+export const NumberPad = ({ onClick, mode = 'value' }: NumberPadProps) => (
   <HStack gap={2} justify="center" wrap="wrap">
     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => (
       <Button 

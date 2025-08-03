@@ -1,12 +1,12 @@
 import { Box, VStack, Text, HStack } from "@chakra-ui/react";
 import { SettingsData } from "../utils/settings";
 
-type Props = {
+interface SettingsProps {
   settings: SettingsData;
   onSettingsChange: (settings: SettingsData) => void;
-};
+}
 
-export const Settings = ({ settings, onSettingsChange }: Props) => {
+export const Settings = ({ settings, onSettingsChange }: SettingsProps) => {
   const handleToggle = (key: keyof SettingsData) => {
     const newSettings = {
       ...settings,

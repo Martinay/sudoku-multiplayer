@@ -1,18 +1,8 @@
 import { GridItem, Grid, Box } from "@chakra-ui/react";
 import { SettingsData } from "../utils/settings";
+import { SudokuCellData } from "../types/game";
 
-type SudokuCellData = {
-  row: number;
-  column: number;
-  value?: number | null | undefined;
-  isValid?: boolean | null | undefined;
-  isEditable: boolean;
-  annotations?: {
-    matrix: number[];
-  } | null;
-};
-
-type Props = {
+interface SudokuCellProps {
   cell: SudokuCellData | null;
   isSelected: boolean;
   onClick: () => void;
@@ -21,7 +11,7 @@ type Props = {
   borderLeft: string;
   borderRight: string;
   settings: SettingsData;
-};
+}
 
 export const SudokuCell = ({
   cell,
@@ -32,7 +22,7 @@ export const SudokuCell = ({
   borderLeft,
   borderRight,
   settings,
-}: Props) => {
+}: SudokuCellProps) => {
   const renderCellContent = () => {
     if (cell?.value) {
       return cell.value;
