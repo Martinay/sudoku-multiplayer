@@ -36,7 +36,7 @@ export const SudokuCell = ({
           gap={0}
           w="100%"
           h="100%"
-          fontSize="10px"
+          fontSize={{ base: "8px", md: "10px" }}
           fontWeight="normal"
         >
           {Array.from({ length: 9 }).map((_, index) => {
@@ -49,7 +49,7 @@ export const SudokuCell = ({
                 alignItems="center"
                 justifyContent="center"
                 color={hasAnnotation ? "blue.600" : "transparent"}
-                fontSize="9px"
+                fontSize={{ base: "7px", md: "9px" }}
               >
                 {hasAnnotation ? number : ""}
               </Box>
@@ -82,7 +82,7 @@ export const SudokuCell = ({
           ? "red.500"
           : "blue.500"
       }
-      fontSize="lg"
+      fontSize={{ base: "sm", md: "lg" }}
       transition="all 0.2s"
       _hover={
         cell?.isEditable ? { bg: "blue.50", transform: "scale(1.05)" } : {}

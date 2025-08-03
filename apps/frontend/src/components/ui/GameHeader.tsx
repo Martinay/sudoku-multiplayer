@@ -5,7 +5,7 @@ interface GameHeaderProps {
 }
 
 export const GameHeader = ({ difficulty }: GameHeaderProps) => (
-  <Heading size="lg" color="blue.600">
+  <Heading size={{ base: "md", md: "lg" }} color="blue.600" textAlign="center">
     Sudoku - Difficulty {difficulty}
   </Heading>
 );

@@ -7,7 +7,7 @@ interface GameModeToggleProps {
 }
 
 export const GameModeToggle = ({ mode, onModeChange }: GameModeToggleProps) => (
-  <HStack gap={3}>
+  <HStack gap={{ base: 2, md: 3 }} flexWrap="wrap" justify="center">
     <Button 
       bg={mode === 'value' ? 'blue.500' : 'transparent'}
       color={mode === 'value' ? 'white' : 'blue.500'}
@@ -15,6 +15,8 @@ export const GameModeToggle = ({ mode, onModeChange }: GameModeToggleProps) => (
       borderColor="blue.500"
       onClick={() => onModeChange('value')}
       _hover={{ bg: mode === 'value' ? 'blue.600' : 'blue.50' }}
+      size={{ base: "sm", md: "md" }}
+      fontSize={{ base: "xs", md: "sm" }}
     >
       Value Mode
     </Button>
@@ -25,6 +27,8 @@ export const GameModeToggle = ({ mode, onModeChange }: GameModeToggleProps) => (
       borderColor="green.500"
       onClick={() => onModeChange('annotation')}
       _hover={{ bg: mode === 'annotation' ? 'green.600' : 'green.50' }}
+      size={{ base: "sm", md: "md" }}
+      fontSize={{ base: "xs", md: "sm" }}
     >
       Annotation Mode
     </Button>

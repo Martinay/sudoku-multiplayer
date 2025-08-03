@@ -20,8 +20,9 @@ export const Settings = ({ settings, onSettingsChange }: SettingsProps) => {
       bg="rgba(255, 255, 255, 0.95)"
       borderRadius="xl"
       boxShadow="lg"
-      p={4}
-      w="220px"
+      p={{ base: 3, md: 4 }}
+      w={{ base: "100%", md: "220px" }}
+      maxW={{ base: "400px", md: "220px" }}
       h="fit-content"
     >
       <VStack gap={4} align="stretch">

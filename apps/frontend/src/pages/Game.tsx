@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { Box, VStack, HStack } from "@chakra-ui/react";
+import { Box, VStack, Flex } from "@chakra-ui/react";
 import { SudokuGrid } from "../components/SudokuGrid";
 import { NumberPad } from "../components/NumberPad";
 import { Settings } from "../components/Settings";
@@ -27,12 +27,14 @@ export default function Game() {
   if (!game || !sudokuCells) return <ErrorMessage message="Game not found" />;
 
   return (
-    <HStack 
-      gap={6} 
-      alignItems="flex-start"
+    <Flex 
+      direction={{ base: "column", md: "row" }}
+      gap={{ base: 4, md: 6 }}
+      alignItems={{ base: "center", md: "flex-start" }}
       justifyContent="center"
-      p={4}
-      maxH="100vh"
+      p={{ base: 2, md: 4 }}
+      minH="100vh"
+      w="100%"
     >
       <Settings 
         settings={settings} 
@@ -41,13 +43,14 @@ export default function Game() {
       
       <Box 
         textAlign="center" 
-        p={3} 
+        p={{ base: 2, md: 3 }}
         bg="rgba(255, 255, 255, 0.95)"
         borderRadius="xl"
         boxShadow="lg"
-        maxW="600px"
+        maxW={{ base: "100%", sm: "400px", md: "600px" }}
+        w="100%"
       >
-        <VStack gap={3}>
+        <VStack gap={{ base: 2, md: 3 }}>
           <GameHeader difficulty={game.difficulty} />
           <GameModeToggle mode={mode} onModeChange={setMode} />
           <SudokuGrid 
@@ -59,6 +62,6 @@ export default function Game() {
           <NumberPad onClick={handleNumberPadClick} mode={mode} />
         </VStack>
       </Box>
-    </HStack>
+    </Flex>
   );
 }

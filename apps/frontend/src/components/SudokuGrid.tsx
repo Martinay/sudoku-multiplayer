@@ -16,12 +16,12 @@ export const SudokuGrid = ({ board, selected, onSelect, settings }: SudokuGridPr
 
   return (
     <Grid
-      templateColumns="repeat(9, 40px)"
-      templateRows="repeat(9, 40px)"
+      templateColumns={{ base: "repeat(9, 32px)", sm: "repeat(9, 36px)", md: "repeat(9, 40px)" }}
+      templateRows={{ base: "repeat(9, 32px)", sm: "repeat(9, 36px)", md: "repeat(9, 40px)" }}
       gap={0}
       justifyContent="center"
       bg="white"
-      p={3}
+      p={{ base: 2, md: 3 }}
       borderRadius="md"
       border="2px solid #2D3748"
       boxShadow="md"

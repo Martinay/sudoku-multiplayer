@@ -25,32 +25,34 @@ export default function Home() {
   };
 
   return (
-    <Box textAlign="center" mt={20} p={8}>
+    <Box textAlign="center" mt={{ base: 8, md: 20 }} p={{ base: 4, md: 8 }} w="100%">
       <VStack spaceX={8} spaceY={8}>
         <Box>
-          <Heading size="2xl" color="white" mb={2}>
+          <Heading size={{ base: "xl", md: "2xl" }} color="white" mb={2}>
             🧩 Sudoku Game
           </Heading>
-          <Text fontSize="lg" color="gray.100">
+          <Text fontSize={{ base: "md", md: "lg" }} color="gray.100">
             Challenge yourself with multiplayer Sudoku!
           </Text>
         </Box>
         
         <Box 
           bg="white" 
-          p={8} 
+          p={{ base: 4, md: 8 }}
           borderRadius="xl" 
           boxShadow="lg" 
           border="1px solid" 
           borderColor="gray.200"
-          minW="400px"
+          minW={{ base: "300px", md: "400px" }}
+          maxW="500px"
+          w="100%"
         >
           <VStack spaceX={6} spaceY={6}>
             <Input
               placeholder="Enter your name"
               value={name}
               onChange={e => setName(e.target.value)}
-              size="lg"
+              size={{ base: "md", md: "lg" }}
               variant="flushed"
               bg="gray.50"
               _hover={{ bg: "gray.100" }}
@@ -60,11 +62,11 @@ export default function Home() {
             <Button 
               bg="blue.500"
               color="white"
-              size="lg"
+              size={{ base: "md", md: "lg" }}
               onClick={handleStart} 
               disabled={!name}
               width="100%"
-              fontSize="lg"
+              fontSize={{ base: "md", md: "lg" }}
               fontWeight="bold"
               _hover={{ 
                 transform: "translateY(-2px)", 
