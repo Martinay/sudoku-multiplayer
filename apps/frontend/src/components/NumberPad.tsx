@@ -2,15 +2,16 @@ import { HStack, Button } from "@chakra-ui/react";
 
 type Props = {
   onClick: (value: number) => void;
+  mode?: 'value' | 'annotation';
 };
 
-export const NumberPad = ({ onClick }: Props) => (
+export const NumberPad = ({ onClick, mode = 'value' }: Props) => (
   <HStack gap={2} justify="center" wrap="wrap">
     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => (
       <Button 
         key={n} 
         onClick={() => onClick(n)}
-        bg="blue.500"
+        bg={mode === 'value' ? "blue.500" : "green.500"}
         size="md"
         minW="40px"
         h="40px"

@@ -14,15 +14,19 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "\n    query getGame($gameId : ID!){\n      game(id: $gameId){\n        id,\n        difficulty,\n        board{\n          row,\n          column,\n          value,\n          isValid,\n          isEditable\n        }\n      }\n    }\n": typeof types.GetGameDocument,
+    "\n    query getGame($gameId : ID!){\n      game(id: $gameId){\n        id,\n        difficulty,\n        board{\n          row,\n          column,\n          value,\n          isValid,\n          isEditable,\n          annotations {\n            matrix\n          }\n        }\n      }\n    }\n": typeof types.GetGameDocument,
     "\n    mutation updateCellValue($gameId : ID!, $row: Int!, $column: Int!, $newValue: Int){\n        updateCellValue(gameId: $gameId, row:$row, column: $column, value: $newValue)\n    }\n": typeof types.UpdateCellValueDocument,
+    "\n    mutation updateCellAnnotations($gameId : ID!, $row: Int!, $column: Int!, $annotations: SudokuCellAnnotationsInput!){\n        updateCellAnnotations(gameId: $gameId, row:$row, column: $column, annotations: $annotations)\n    }\n": typeof types.UpdateCellAnnotationsDocument,
     "\nsubscription onCellValueUpdated($gameId: ID!){\n  onCellValueUpdated(gameId: $gameId){\n    row,\n    column,\n    value\n  }\n}\n": typeof types.OnCellValueUpdatedDocument,
+    "\nsubscription onCellAnnotationsUpdated($gameId: ID!){\n  onCellAnnotationsUpdated(gameId: $gameId){\n    row,\n    column,\n    annotations {\n      matrix\n    }\n  }\n}\n": typeof types.OnCellAnnotationsUpdatedDocument,
     "\n    mutation createNewGame{\n      createNewGame {\n        id\n      }\n    }\n": typeof types.CreateNewGameDocument,
 };
 const documents: Documents = {
-    "\n    query getGame($gameId : ID!){\n      game(id: $gameId){\n        id,\n        difficulty,\n        board{\n          row,\n          column,\n          value,\n          isValid,\n          isEditable\n        }\n      }\n    }\n": types.GetGameDocument,
+    "\n    query getGame($gameId : ID!){\n      game(id: $gameId){\n        id,\n        difficulty,\n        board{\n          row,\n          column,\n          value,\n          isValid,\n          isEditable,\n          annotations {\n            matrix\n          }\n        }\n      }\n    }\n": types.GetGameDocument,
     "\n    mutation updateCellValue($gameId : ID!, $row: Int!, $column: Int!, $newValue: Int){\n        updateCellValue(gameId: $gameId, row:$row, column: $column, value: $newValue)\n    }\n": types.UpdateCellValueDocument,
+    "\n    mutation updateCellAnnotations($gameId : ID!, $row: Int!, $column: Int!, $annotations: SudokuCellAnnotationsInput!){\n        updateCellAnnotations(gameId: $gameId, row:$row, column: $column, annotations: $annotations)\n    }\n": types.UpdateCellAnnotationsDocument,
     "\nsubscription onCellValueUpdated($gameId: ID!){\n  onCellValueUpdated(gameId: $gameId){\n    row,\n    column,\n    value\n  }\n}\n": types.OnCellValueUpdatedDocument,
+    "\nsubscription onCellAnnotationsUpdated($gameId: ID!){\n  onCellAnnotationsUpdated(gameId: $gameId){\n    row,\n    column,\n    annotations {\n      matrix\n    }\n  }\n}\n": types.OnCellAnnotationsUpdatedDocument,
     "\n    mutation createNewGame{\n      createNewGame {\n        id\n      }\n    }\n": types.CreateNewGameDocument,
 };
 
@@ -43,7 +47,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query getGame($gameId : ID!){\n      game(id: $gameId){\n        id,\n        difficulty,\n        board{\n          row,\n          column,\n          value,\n          isValid,\n          isEditable\n        }\n      }\n    }\n"): (typeof documents)["\n    query getGame($gameId : ID!){\n      game(id: $gameId){\n        id,\n        difficulty,\n        board{\n          row,\n          column,\n          value,\n          isValid,\n          isEditable\n        }\n      }\n    }\n"];
+export function graphql(source: "\n    query getGame($gameId : ID!){\n      game(id: $gameId){\n        id,\n        difficulty,\n        board{\n          row,\n          column,\n          value,\n          isValid,\n          isEditable,\n          annotations {\n            matrix\n          }\n        }\n      }\n    }\n"): (typeof documents)["\n    query getGame($gameId : ID!){\n      game(id: $gameId){\n        id,\n        difficulty,\n        board{\n          row,\n          column,\n          value,\n          isValid,\n          isEditable,\n          annotations {\n            matrix\n          }\n        }\n      }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -51,7 +55,15 @@ export function graphql(source: "\n    mutation updateCellValue($gameId : ID!, $
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n    mutation updateCellAnnotations($gameId : ID!, $row: Int!, $column: Int!, $annotations: SudokuCellAnnotationsInput!){\n        updateCellAnnotations(gameId: $gameId, row:$row, column: $column, annotations: $annotations)\n    }\n"): (typeof documents)["\n    mutation updateCellAnnotations($gameId : ID!, $row: Int!, $column: Int!, $annotations: SudokuCellAnnotationsInput!){\n        updateCellAnnotations(gameId: $gameId, row:$row, column: $column, annotations: $annotations)\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\nsubscription onCellValueUpdated($gameId: ID!){\n  onCellValueUpdated(gameId: $gameId){\n    row,\n    column,\n    value\n  }\n}\n"): (typeof documents)["\nsubscription onCellValueUpdated($gameId: ID!){\n  onCellValueUpdated(gameId: $gameId){\n    row,\n    column,\n    value\n  }\n}\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\nsubscription onCellAnnotationsUpdated($gameId: ID!){\n  onCellAnnotationsUpdated(gameId: $gameId){\n    row,\n    column,\n    annotations {\n      matrix\n    }\n  }\n}\n"): (typeof documents)["\nsubscription onCellAnnotationsUpdated($gameId: ID!){\n  onCellAnnotationsUpdated(gameId: $gameId){\n    row,\n    column,\n    annotations {\n      matrix\n    }\n  }\n}\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

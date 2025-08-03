@@ -37,6 +37,7 @@ export const createRandomGame = async (): Promise<SudokuGame> => {
       isEditable: valueParsed === null,
       isValid:
         valueParsed === null ? undefined : valueParsed === solutionValueParsed,
+      annotations: { matrix: [] },
     } as SudokuCell;
   });
 

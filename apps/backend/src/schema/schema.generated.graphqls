@@ -1,3 +1,9 @@
+type CellAnnotationsUpdateData {
+  annotations: SudokuCellAnnotations
+  column: Int!
+  row: Int!
+}
+
 type CellValueUpdateData {
   column: Int!
   isValid: Boolean
@@ -7,6 +13,7 @@ type CellValueUpdateData {
 
 type Mutation {
   createNewGame: SudokuGame!
+  updateCellAnnotations(annotations: SudokuCellAnnotationsInput!, column: Int!, gameId: ID!, row: Int!): Boolean
   updateCellValue(column: Int!, gameId: ID!, row: Int!, value: Int): Boolean
 }
 
@@ -15,16 +22,26 @@ type Query {
 }
 
 type Subscription {
+  onCellAnnotationsUpdated(gameId: ID!): CellAnnotationsUpdateData
   onCellValueUpdated(gameId: ID!): CellValueUpdateData
 }
 
 type SudokuCell {
+  annotations: SudokuCellAnnotations
   column: Int!
   isEditable: Boolean!
   isValid: Boolean
   row: Int!
   solution: Int!
   value: Int
+}
+
+type SudokuCellAnnotations {
+  matrix: [Int!]!
+}
+
+input SudokuCellAnnotationsInput {
+  matrix: [Int!]!
 }
 
 type SudokuGame {

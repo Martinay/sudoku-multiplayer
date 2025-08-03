@@ -16,6 +16,13 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type CellAnnotationsUpdateData = {
+  __typename?: 'CellAnnotationsUpdateData';
+  annotations?: Maybe<SudokuCellAnnotations>;
+  column: Scalars['Int']['output'];
+  row: Scalars['Int']['output'];
+};
+
 export type CellValueUpdateData = {
   __typename?: 'CellValueUpdateData';
   column: Scalars['Int']['output'];
@@ -27,7 +34,16 @@ export type CellValueUpdateData = {
 export type Mutation = {
   __typename?: 'Mutation';
   createNewGame: SudokuGame;
+  updateCellAnnotations?: Maybe<Scalars['Boolean']['output']>;
   updateCellValue?: Maybe<Scalars['Boolean']['output']>;
+};
+
+
+export type MutationupdateCellAnnotationsArgs = {
+  annotations: SudokuCellAnnotationsInput;
+  column: Scalars['Int']['input'];
+  gameId: Scalars['ID']['input'];
+  row: Scalars['Int']['input'];
 };
 
 
@@ -50,7 +66,13 @@ export type QuerygameArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  onCellAnnotationsUpdated?: Maybe<CellAnnotationsUpdateData>;
   onCellValueUpdated?: Maybe<CellValueUpdateData>;
+};
+
+
+export type SubscriptiononCellAnnotationsUpdatedArgs = {
+  gameId: Scalars['ID']['input'];
 };
 
 
@@ -60,12 +82,22 @@ export type SubscriptiononCellValueUpdatedArgs = {
 
 export type SudokuCell = {
   __typename?: 'SudokuCell';
+  annotations?: Maybe<SudokuCellAnnotations>;
   column: Scalars['Int']['output'];
   isEditable: Scalars['Boolean']['output'];
   isValid?: Maybe<Scalars['Boolean']['output']>;
   row: Scalars['Int']['output'];
   solution: Scalars['Int']['output'];
   value?: Maybe<Scalars['Int']['output']>;
+};
+
+export type SudokuCellAnnotations = {
+  __typename?: 'SudokuCellAnnotations';
+  matrix: Array<Scalars['Int']['output']>;
+};
+
+export type SudokuCellAnnotationsInput = {
+  matrix: Array<Scalars['Int']['input']>;
 };
 
 export type SudokuGame = {
@@ -146,30 +178,43 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  CellValueUpdateData: ResolverTypeWrapper<CellValueUpdateData>;
+  CellAnnotationsUpdateData: ResolverTypeWrapper<CellAnnotationsUpdateData>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  CellValueUpdateData: ResolverTypeWrapper<CellValueUpdateData>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Query: ResolverTypeWrapper<{}>;
   Subscription: ResolverTypeWrapper<{}>;
   SudokuCell: ResolverTypeWrapper<SudokuCell>;
+  SudokuCellAnnotations: ResolverTypeWrapper<SudokuCellAnnotations>;
+  SudokuCellAnnotationsInput: SudokuCellAnnotationsInput;
   SudokuGame: ResolverTypeWrapper<SudokuGame>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  CellValueUpdateData: CellValueUpdateData;
+  CellAnnotationsUpdateData: CellAnnotationsUpdateData;
   Int: Scalars['Int']['output'];
+  CellValueUpdateData: CellValueUpdateData;
   Boolean: Scalars['Boolean']['output'];
   Mutation: {};
   ID: Scalars['ID']['output'];
   Query: {};
   Subscription: {};
   SudokuCell: SudokuCell;
+  SudokuCellAnnotations: SudokuCellAnnotations;
+  SudokuCellAnnotationsInput: SudokuCellAnnotationsInput;
   SudokuGame: SudokuGame;
   String: Scalars['String']['output'];
+};
+
+export type CellAnnotationsUpdateDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CellAnnotationsUpdateData'] = ResolversParentTypes['CellAnnotationsUpdateData']> = {
+  annotations?: Resolver<Maybe<ResolversTypes['SudokuCellAnnotations']>, ParentType, ContextType>;
+  column?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  row?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type CellValueUpdateDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CellValueUpdateData'] = ResolversParentTypes['CellValueUpdateData']> = {
@@ -182,6 +227,7 @@ export type CellValueUpdateDataResolvers<ContextType = any, ParentType extends R
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createNewGame?: Resolver<ResolversTypes['SudokuGame'], ParentType, ContextType>;
+  updateCellAnnotations?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationupdateCellAnnotationsArgs, 'annotations' | 'column' | 'gameId' | 'row'>>;
   updateCellValue?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationupdateCellValueArgs, 'column' | 'gameId' | 'row'>>;
 };
 
@@ -190,16 +236,23 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
+  onCellAnnotationsUpdated?: SubscriptionResolver<Maybe<ResolversTypes['CellAnnotationsUpdateData']>, "onCellAnnotationsUpdated", ParentType, ContextType, RequireFields<SubscriptiononCellAnnotationsUpdatedArgs, 'gameId'>>;
   onCellValueUpdated?: SubscriptionResolver<Maybe<ResolversTypes['CellValueUpdateData']>, "onCellValueUpdated", ParentType, ContextType, RequireFields<SubscriptiononCellValueUpdatedArgs, 'gameId'>>;
 };
 
 export type SudokuCellResolvers<ContextType = any, ParentType extends ResolversParentTypes['SudokuCell'] = ResolversParentTypes['SudokuCell']> = {
+  annotations?: Resolver<Maybe<ResolversTypes['SudokuCellAnnotations']>, ParentType, ContextType>;
   column?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   isEditable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   isValid?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   row?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   solution?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   value?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SudokuCellAnnotationsResolvers<ContextType = any, ParentType extends ResolversParentTypes['SudokuCellAnnotations'] = ResolversParentTypes['SudokuCellAnnotations']> = {
+  matrix?: Resolver<Array<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -211,11 +264,13 @@ export type SudokuGameResolvers<ContextType = any, ParentType extends ResolversP
 };
 
 export type Resolvers<ContextType = any> = {
+  CellAnnotationsUpdateData?: CellAnnotationsUpdateDataResolvers<ContextType>;
   CellValueUpdateData?: CellValueUpdateDataResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   SudokuCell?: SudokuCellResolvers<ContextType>;
+  SudokuCellAnnotations?: SudokuCellAnnotationsResolvers<ContextType>;
   SudokuGame?: SudokuGameResolvers<ContextType>;
 };
 

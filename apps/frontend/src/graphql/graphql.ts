@@ -16,6 +16,13 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type CellAnnotationsUpdateData = {
+  __typename?: 'CellAnnotationsUpdateData';
+  annotations?: Maybe<SudokuCellAnnotations>;
+  column: Scalars['Int']['output'];
+  row: Scalars['Int']['output'];
+};
+
 export type CellValueUpdateData = {
   __typename?: 'CellValueUpdateData';
   column: Scalars['Int']['output'];
@@ -27,7 +34,16 @@ export type CellValueUpdateData = {
 export type Mutation = {
   __typename?: 'Mutation';
   createNewGame: SudokuGame;
+  updateCellAnnotations?: Maybe<Scalars['Boolean']['output']>;
   updateCellValue?: Maybe<Scalars['Boolean']['output']>;
+};
+
+
+export type MutationUpdateCellAnnotationsArgs = {
+  annotations: SudokuCellAnnotationsInput;
+  column: Scalars['Int']['input'];
+  gameId: Scalars['ID']['input'];
+  row: Scalars['Int']['input'];
 };
 
 
@@ -50,7 +66,13 @@ export type QueryGameArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  onCellAnnotationsUpdated?: Maybe<CellAnnotationsUpdateData>;
   onCellValueUpdated?: Maybe<CellValueUpdateData>;
+};
+
+
+export type SubscriptionOnCellAnnotationsUpdatedArgs = {
+  gameId: Scalars['ID']['input'];
 };
 
 
@@ -60,12 +82,22 @@ export type SubscriptionOnCellValueUpdatedArgs = {
 
 export type SudokuCell = {
   __typename?: 'SudokuCell';
+  annotations?: Maybe<SudokuCellAnnotations>;
   column: Scalars['Int']['output'];
   isEditable: Scalars['Boolean']['output'];
   isValid?: Maybe<Scalars['Boolean']['output']>;
   row: Scalars['Int']['output'];
   solution: Scalars['Int']['output'];
   value?: Maybe<Scalars['Int']['output']>;
+};
+
+export type SudokuCellAnnotations = {
+  __typename?: 'SudokuCellAnnotations';
+  matrix: Array<Scalars['Int']['output']>;
+};
+
+export type SudokuCellAnnotationsInput = {
+  matrix: Array<Scalars['Int']['input']>;
 };
 
 export type SudokuGame = {
@@ -80,7 +112,7 @@ export type GetGameQueryVariables = Exact<{
 }>;
 
 
-export type GetGameQuery = { __typename?: 'Query', game?: { __typename?: 'SudokuGame', id: string, difficulty: string, board: Array<{ __typename?: 'SudokuCell', row: number, column: number, value?: number | null, isValid?: boolean | null, isEditable: boolean } | null> } | null };
+export type GetGameQuery = { __typename?: 'Query', game?: { __typename?: 'SudokuGame', id: string, difficulty: string, board: Array<{ __typename?: 'SudokuCell', row: number, column: number, value?: number | null, isValid?: boolean | null, isEditable: boolean, annotations?: { __typename?: 'SudokuCellAnnotations', matrix: Array<number> } | null } | null> } | null };
 
 export type UpdateCellValueMutationVariables = Exact<{
   gameId: Scalars['ID']['input'];
@@ -92,6 +124,16 @@ export type UpdateCellValueMutationVariables = Exact<{
 
 export type UpdateCellValueMutation = { __typename?: 'Mutation', updateCellValue?: boolean | null };
 
+export type UpdateCellAnnotationsMutationVariables = Exact<{
+  gameId: Scalars['ID']['input'];
+  row: Scalars['Int']['input'];
+  column: Scalars['Int']['input'];
+  annotations: SudokuCellAnnotationsInput;
+}>;
+
+
+export type UpdateCellAnnotationsMutation = { __typename?: 'Mutation', updateCellAnnotations?: boolean | null };
+
 export type OnCellValueUpdatedSubscriptionVariables = Exact<{
   gameId: Scalars['ID']['input'];
 }>;
@@ -99,13 +141,22 @@ export type OnCellValueUpdatedSubscriptionVariables = Exact<{
 
 export type OnCellValueUpdatedSubscription = { __typename?: 'Subscription', onCellValueUpdated?: { __typename?: 'CellValueUpdateData', row: number, column: number, value?: number | null } | null };
 
+export type OnCellAnnotationsUpdatedSubscriptionVariables = Exact<{
+  gameId: Scalars['ID']['input'];
+}>;
+
+
+export type OnCellAnnotationsUpdatedSubscription = { __typename?: 'Subscription', onCellAnnotationsUpdated?: { __typename?: 'CellAnnotationsUpdateData', row: number, column: number, annotations?: { __typename?: 'SudokuCellAnnotations', matrix: Array<number> } | null } | null };
+
 export type CreateNewGameMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CreateNewGameMutation = { __typename?: 'Mutation', createNewGame: { __typename?: 'SudokuGame', id: string } };
 
 
-export const GetGameDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getGame"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"game"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}},{"kind":"Field","name":{"kind":"Name","value":"board"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"row"}},{"kind":"Field","name":{"kind":"Name","value":"column"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"isValid"}},{"kind":"Field","name":{"kind":"Name","value":"isEditable"}}]}}]}}]}}]} as unknown as DocumentNode<GetGameQuery, GetGameQueryVariables>;
+export const GetGameDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getGame"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"game"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}},{"kind":"Field","name":{"kind":"Name","value":"board"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"row"}},{"kind":"Field","name":{"kind":"Name","value":"column"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"isValid"}},{"kind":"Field","name":{"kind":"Name","value":"isEditable"}},{"kind":"Field","name":{"kind":"Name","value":"annotations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"matrix"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetGameQuery, GetGameQueryVariables>;
 export const UpdateCellValueDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateCellValue"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"row"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"column"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"newValue"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCellValue"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gameId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}}},{"kind":"Argument","name":{"kind":"Name","value":"row"},"value":{"kind":"Variable","name":{"kind":"Name","value":"row"}}},{"kind":"Argument","name":{"kind":"Name","value":"column"},"value":{"kind":"Variable","name":{"kind":"Name","value":"column"}}},{"kind":"Argument","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"newValue"}}}]}]}}]} as unknown as DocumentNode<UpdateCellValueMutation, UpdateCellValueMutationVariables>;
+export const UpdateCellAnnotationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateCellAnnotations"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"row"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"column"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"annotations"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SudokuCellAnnotationsInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCellAnnotations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gameId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}}},{"kind":"Argument","name":{"kind":"Name","value":"row"},"value":{"kind":"Variable","name":{"kind":"Name","value":"row"}}},{"kind":"Argument","name":{"kind":"Name","value":"column"},"value":{"kind":"Variable","name":{"kind":"Name","value":"column"}}},{"kind":"Argument","name":{"kind":"Name","value":"annotations"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annotations"}}}]}]}}]} as unknown as DocumentNode<UpdateCellAnnotationsMutation, UpdateCellAnnotationsMutationVariables>;
 export const OnCellValueUpdatedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"onCellValueUpdated"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"onCellValueUpdated"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gameId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"row"}},{"kind":"Field","name":{"kind":"Name","value":"column"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<OnCellValueUpdatedSubscription, OnCellValueUpdatedSubscriptionVariables>;
+export const OnCellAnnotationsUpdatedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"onCellAnnotationsUpdated"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"onCellAnnotationsUpdated"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gameId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gameId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"row"}},{"kind":"Field","name":{"kind":"Name","value":"column"}},{"kind":"Field","name":{"kind":"Name","value":"annotations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"matrix"}}]}}]}}]}}]} as unknown as DocumentNode<OnCellAnnotationsUpdatedSubscription, OnCellAnnotationsUpdatedSubscriptionVariables>;
 export const CreateNewGameDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createNewGame"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createNewGame"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateNewGameMutation, CreateNewGameMutationVariables>;

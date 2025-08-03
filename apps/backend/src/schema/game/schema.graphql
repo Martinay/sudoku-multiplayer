@@ -4,18 +4,31 @@ extend type Query {
 
 extend type Mutation {
   createNewGame: SudokuGame!
-  updateCellValue(gameId: ID!, row: Int!, column: Int!, value: Int): Boolean,
+  updateCellValue(gameId: ID!, row: Int!, column: Int!, value: Int): Boolean
+  updateCellAnnotations(
+    gameId: ID!
+    row: Int!
+    column: Int!
+    annotations: SudokuCellAnnotationsInput!
+  ): Boolean
 }
 
 extend type Subscription {
-  onCellValueUpdated(gameId: ID!):CellValueUpdateData
+  onCellValueUpdated(gameId: ID!): CellValueUpdateData
+  onCellAnnotationsUpdated(gameId: ID!): CellAnnotationsUpdateData
 }
 
-type CellValueUpdateData{
+type CellValueUpdateData {
   row: Int!
   column: Int!
   value: Int
   isValid: Boolean
+}
+
+type CellAnnotationsUpdateData {
+  row: Int!
+  column: Int!
+  annotations: SudokuCellAnnotations
 }
 
 type SudokuGame {
@@ -31,4 +44,13 @@ type SudokuCell {
   solution: Int!
   isEditable: Boolean!
   isValid: Boolean
+  annotations: SudokuCellAnnotations
+}
+
+type SudokuCellAnnotations {
+  matrix: [Int!]!
+}
+
+input SudokuCellAnnotationsInput {
+  matrix: [Int!]!
 }

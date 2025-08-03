@@ -9,6 +9,7 @@
       "dev": "bun --filter  './apps/*' dev",
       "docker:build": "docker build -t sudoku-multiplayer:latest .",
       "docker:run": "docker run --rm -p 3100:3000 sudoku-multiplayer:latest",
-      "graphql-gen": "bun run --filter './apps/*' graphql-gen"
+      "graphql-gen": "bun run --filter './apps/*' graphql-gen",
+      "prettier:write": "bun run --filter './apps/*' prettier:write"
     }
   }

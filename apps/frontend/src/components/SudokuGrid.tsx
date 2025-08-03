@@ -1,14 +1,15 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
+import { SudokuCell } from "./SudokuCell";
 
 type Props = {
-  board: ({row: number; column: number; value?: number | null | undefined; isValid?: boolean | null | undefined; isEditable: boolean; } | null)[];
+  board: ({row: number; column: number; value?: number | null | undefined; isValid?: boolean | null | undefined; isEditable: boolean; annotations?: { matrix: number[]; } | null; } | null)[];
   selected: { row: number; column: number } | null;
   onSelect: (row: number, column: number) => void;
 };
 
 export const SudokuGrid = ({ board, selected, onSelect }: Props) => {
   const getCell = (row: number, col: number) =>
-    board.find(cell => cell?.row === row && cell?.column === col);
+    board.find(cell => cell?.row === row && cell?.column === col) || null;
 
   return (
     <Grid
@@ -33,27 +34,16 @@ export const SudokuGrid = ({ board, selected, onSelect }: Props) => {
           const borderRight = col === 8 ? "2px solid black" : "1px solid grey"; // Thicker right for last col
 
           return (
-            <GridItem
+            <SudokuCell
               key={`${row}-${col}`}
-              bg={isSelected ? "blue.100" : cell?.isEditable ? "white" : "gray.100"}
+              cell={cell}
+              isSelected={isSelected}
+              onClick={() => onSelect(row, col)}
               borderTop={borderTop}
               borderBottom={borderBottom}
               borderLeft={borderLeft}
               borderRight={borderRight}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              cursor={cell?.isEditable ? "pointer" : "default"}
-              onClick={() => cell?.isEditable && onSelect(row, col)}
-              fontWeight={cell?.isEditable ? "normal" : "bold"}
-              color={cell?.isValid === false ? "red.500" : cell?.isEditable ? "blue.600" : "gray.700"}
-              fontSize="lg"
-              transition="all 0.2s"
-              _hover={cell?.isEditable ? { bg: "blue.50", transform: "scale(1.05)" } : {}}
-              _active={cell?.isEditable ? { transform: "scale(0.95)" } : {}}
-            >
-              {cell?.value ?? ""}
-            </GridItem>
+            />
           );
         })
       )}
