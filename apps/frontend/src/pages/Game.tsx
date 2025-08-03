@@ -92,17 +92,31 @@ export default function Game() {
 
   const handleNumberClick = (value: number) => {
     if (selected && gameId) {
-      if (mode === 'value') {
+      if (value === 0) {
+        // Clear button: remove both value and annotations
         updateCellValue({
           gameId,
           row: selected.row,
           column: selected.column,
-          newValue: value === 0 ? null : value,
+          newValue: null,
+        });
+        updateCellAnnotations({
+          gameId,
+          row: selected.row,
+          column: selected.column,
+          annotations: { matrix: [] },
+        });
+      } else if (mode === 'value') {
+        updateCellValue({
+          gameId,
+          row: selected.row,
+          column: selected.column,
+          newValue: value,
         });
       } else {
         const cell = sudokuCells?.find(c => c.row === selected.row && c.column === selected.column);
         
-        if (cell && value !== 0) {
+        if (cell) {
           const currentAnnotations = cell.annotations?.matrix || [];
           const newAnnotations = currentAnnotations.includes(value)
             ? currentAnnotations.filter(a => a !== value)
