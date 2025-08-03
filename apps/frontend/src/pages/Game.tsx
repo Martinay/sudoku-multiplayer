@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useMutation, useQuery, useSubscription } from "urql";
-import { Box, Heading, Spinner, Text } from "@chakra-ui/react";
+import { Box, Heading, Spinner, VStack } from "@chakra-ui/react";
 import { SudokuGrid } from "../components/SudokuGrid";
 import { NumberPad } from "../components/NumberPad";
 import { graphql } from "../graphql/gql";
@@ -91,14 +91,36 @@ export default function Game() {
 
   const game = data?.game;
 
-  if (fetching || !game || sudokuCells === null) return <Spinner mt={40} size="xl" color="orange.500" />;
+  if (fetching || !game || sudokuCells === null) return (
+    <Box textAlign="center" mt={20}>
+      <Spinner size="lg" color="blue.500" />
+    </Box>
+  );
 
   return (
-    <Box textAlign="center" mt={10}>
-      <Heading mb={6}>Game #{game.id}</Heading>
-      <Text>Difficulty: {game.difficulty} / 10 </Text>
-      <SudokuGrid board={sudokuCells} selected={selected} onSelect={(row, column) => setSelected({ row: row, column: column })} />
-      <NumberPad onClick={handleNumberClick} />
+    <Box 
+      textAlign="center" 
+      p={3} 
+      maxH="100vh"
+      bg="rgba(255, 255, 255, 0.95)"
+      borderRadius="xl"
+      boxShadow="lg"
+      maxW="600px"
+      mx="auto"
+    >
+      <VStack gap={3}>
+        <Heading size="lg" color="blue.600">
+          Sudoku - Difficulty {game.difficulty}
+        </Heading>
+        
+        <SudokuGrid 
+          board={sudokuCells} 
+          selected={selected} 
+          onSelect={(row, column) => setSelected({ row: row, column: column })} 
+        />
+        
+        <NumberPad onClick={handleNumberClick} />
+      </VStack>
     </Box>
   );
 }

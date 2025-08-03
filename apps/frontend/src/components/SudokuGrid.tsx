@@ -16,10 +16,12 @@ export const SudokuGrid = ({ board, selected, onSelect }: Props) => {
       templateRows="repeat(9, 40px)"
       gap={0}
       justifyContent="center"
-      bg="gray.100"
-      p={4}
+      bg="white"
+      p={3}
       borderRadius="md"
-      border="2px solid black" // Add a thicker outer border
+      border="2px solid #2D3748"
+      boxShadow="md"
+      mx="auto"
     >
       {Array.from({ length: 9 }).flatMap((_, row) =>
         Array.from({ length: 9 }).map((_, col) => {
@@ -33,7 +35,7 @@ export const SudokuGrid = ({ board, selected, onSelect }: Props) => {
           return (
             <GridItem
               key={`${row}-${col}`}
-              bg={isSelected ? "orange.200" : cell?.isEditable ? "white" : "gray.300"}
+              bg={isSelected ? "blue.100" : cell?.isEditable ? "white" : "gray.100"}
               borderTop={borderTop}
               borderBottom={borderBottom}
               borderLeft={borderLeft}
@@ -44,8 +46,11 @@ export const SudokuGrid = ({ board, selected, onSelect }: Props) => {
               cursor={cell?.isEditable ? "pointer" : "default"}
               onClick={() => cell?.isEditable && onSelect(row, col)}
               fontWeight={cell?.isEditable ? "normal" : "bold"}
-              color={cell?.isValid === false ? "red.500" : "black"}
-              fontSize="xl" // Optional: Increase font size for better visibility
+              color={cell?.isValid === false ? "red.500" : cell?.isEditable ? "blue.600" : "gray.700"}
+              fontSize="lg"
+              transition="all 0.2s"
+              _hover={cell?.isEditable ? { bg: "blue.50", transform: "scale(1.05)" } : {}}
+              _active={cell?.isEditable ? { transform: "scale(0.95)" } : {}}
             >
               {cell?.value ?? ""}
             </GridItem>
