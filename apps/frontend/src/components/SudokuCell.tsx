@@ -83,11 +83,11 @@ export const SudokuCell = ({
       onClick={() => cell?.isEditable && onClick()}
       fontWeight={cell?.isEditable ? "normal" : "bold"}
       color={
-        cell?.isValid === false
-          ? "red.500"
-          : cell?.isEditable
-          ? "blue.600"
-          : "gray.700"
+        cell?.isEditable === false
+          ? "gray.700"
+          : cell?.isValid === true
+          ? "green.500"
+          : "red.500"
       }
       fontSize="lg"
       transition="all 0.2s"

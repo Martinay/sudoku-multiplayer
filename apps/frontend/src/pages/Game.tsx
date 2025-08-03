@@ -43,7 +43,8 @@ subscription onCellValueUpdated($gameId: ID!){
   onCellValueUpdated(gameId: $gameId){
     row,
     column,
-    value
+    value,
+    isValid
   }
 }
 `);
@@ -119,14 +120,13 @@ export default function Game() {
   };
 
   useEffect(() => {
-    console.log("Subscription data:", subscriptionData);
     if (subscriptionData?.onCellValueUpdated) {
-      const { row, column, value } = subscriptionData.onCellValueUpdated;
+      const { row, column, value, isValid } = subscriptionData.onCellValueUpdated;
       setSudokuCells(prevBoard =>
         prevBoard &&
         prevBoard.map(cell => {
           if (cell?.row === row && cell?.column === column) {
-            return { ...cell, value };
+            return { ...cell, value, isValid };
           }
           return cell;
         })
